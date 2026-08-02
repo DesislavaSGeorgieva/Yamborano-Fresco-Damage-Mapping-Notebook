@@ -1,4 +1,4 @@
-# Yamborano Fresco — Damage Mapping Notebook
+# Yamborano Fresco - Damage Mapping Notebook
 
 Companion computational notebook to:
 
@@ -41,8 +41,8 @@ restriction.
 1. The four framed compartments of the cycle are defined as polygons in pixel coordinates
    (Section 3 of the notebook), since the photograph is taken at an oblique angle to a curved
    ceiling surface.
-2. A small set of example pixel colours — some confirmed bare/lost plaster, some confirmed
-   surviving paint of several different colours — are converted to CIELAB colour space and used to
+2. A small set of example pixel colours - some confirmed bare/lost plaster, some confirmed
+   surviving paint of several different colours - are converted to CIELAB colour space and used to
    train a k-nearest-neighbours classifier (Section 4). Every pixel in the photograph is then
    labelled "lost" or "surviving" according to which labelled examples its colour most closely
    resembles.
