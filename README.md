@@ -59,13 +59,13 @@ defaults with hand-picked points.
 
 | Scene | Surface lost (%) | Surface surviving (%) |
 |---|---|---|
-| Ascension | 28.6 | 71.4 |
-| Transfiguration | 21.0 | 79.0 |
-| Entry into Jerusalem | 15.0 | 85.0 |
-| Pentecost | 17.6 | 82.4 |
+| Ascension | 32.43 | 67.57 |
+| Transfiguration | 31.21 | 68.79 |
+| Entry into Jerusalem | 2.60 | 97.40 |
+| Pentecost |  0.75 | 99.25 |
 
-> Across the four compartments, surface loss ranges from 15% (Entry into Jerusalem) to 29%
-> (Ascension), with a mean loss across the cycle of 21%.
+> Across the four compartments, surface loss ranges from 0.75% (Pentecost) to 31.21% 
+> (The Transfiguration), with a mean loss across the cycle of 16.66%.
 
 ## Reproducing the results
 
