@@ -1,4 +1,4 @@
-# Recovering the Unrecoverable — Yamborano Fresco Damage Mapping  
+# Recovering the Unrecoverable — Yamborano Fresco Damage Mapping Notebook  
 
 Companion computational notebook to:
 
