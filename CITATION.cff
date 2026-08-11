@@ -1,1 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this notebook or its results in your research, please cite this work."
+title: "Recovering the Unrecoverable — Yamborano Fresco Damage Mapping Notebook"
+type: software
 
+authors:
+  - given-names: "Desislava S."
+    family-names: "Georgieva"
+
+version: "1.0.0"
+
+keywords:
+  - Digital Art History
+  - Computer Vision
+  - mural painting
+  - Bulgarian National Revival
+  - surface loss
+  - image segmentation
+  - cultural heritage
+  - computational art history
+
+abstract: >
+  Computational research notebook for the documentation and quantitative
+  analysis of visible surface loss in a nineteenth-century Bulgarian
+  National Revival mural cycle from an archival photograph.
+
+license: "MIT"
