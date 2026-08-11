@@ -1,154 +1,119 @@
 # Recovering the Unrecoverable — Yamborano Fresco Damage Mapping Notebook
 
-**Author:** Desislava S. Georgieva, PhD in Art History  
-**Status:** Independent Researcher  
-**Year:** 2026
+A computational research companion to the article **“Recovering the Unrecoverable: Documenting and Interpreting a Vanishing Bulgarian National Revival Fresco Cycle.”**
 
-This repository contains the computational research notebook accompanying the article *Recovering the Unrecoverable: Documenting and Interpreting a Vanishing Bulgarian National Revival Fresco Cycle*.
+This repository contains the computational notebook, source image, quantitative results, and selected visual output supporting the computer-vision analysis of visible surface loss in the Yamborano fresco cycle.
 
-The notebook documents and quantitatively analyses visible surface loss in a nineteenth-century Bulgarian National Revival fresco cycle preserved in the Church of the Dormition of the Mother of God in the village of Yamborano, Kyustendil province, Bulgaria.
-
-The computational analysis is based on an archival photograph taken by the author in 2005.
-
-![Per-scene segmentation results](outputs/per_scene_masks.png)
-
-## Research objective
-
-The principal objective of this notebook is to provide a transparent and reproducible computational estimate of visible surface loss within the four analysed scenes of the mural cycle.
-
-The workflow distinguishes between two visually observable categories:
-
-- preserved painted surface;
-- exposed plaster interpreted as visible surface loss.
-
-The analysis does not attempt to reconstruct missing painting, diagnose conservation conditions, or replace direct physical examination of the mural.
-
-Instead, it uses computational image analysis to transform the visible evidence preserved in the archival photograph into scene-level and aggregate quantitative measurements.
-
-## Computational workflow
-
-The notebook documents a complete workflow consisting of:
-
-1. preparation of the archival photograph;
-2. identification and separation of the four analysed scenes;
-3. image preprocessing and colour-space transformation;
-4. development and evaluation of alternative segmentation approaches;
-5. scene-specific segmentation of visible surface loss;
-6. visual inspection and verification of the resulting masks;
-7. calculation of detected surface loss for each scene;
-8. calculation of aggregate detected surface loss across the four analysed scene regions;
-9. graphical visualisation of the quantitative results.
-
-The workflow is designed to make the computational decisions, intermediate results and limitations of the analysis explicitly inspectable.
-
-## Development of the segmentation strategy
-
-The mural presents a particularly difficult segmentation problem because exposed plaster shares visual characteristics with preserved light-coloured pictorial elements.
-
-This spectral overlap is especially evident in white garments, halos, facial highlights, flesh tones, architectural details and other illuminated passages. Consequently, both false-positive and false-negative classifications can occur when image characteristics alone are used to distinguish exposed plaster from preserved painting.
-
-During methodological development, several computer-vision approaches were implemented and evaluated:
-
-### Global brightness and grayscale thresholding
-
-Global brightness and luminance thresholding frequently classified preserved light-coloured pictorial elements as surface loss, while darker or unevenly illuminated areas of exposed plaster could remain undetected.
-
-### Global RGB thresholding
-
-RGB thresholding produced substantial overlap between exposed plaster and preserved pale pictorial elements, resulting in over-segmentation in several areas.
-
-### HSV colour thresholding
-
-HSV-based segmentation allowed saturation and brightness to be considered separately, but preserved white and pale pictorial elements continued to overlap with exposed plaster in colour space. No single parameter combination provided consistent results across all four scenes.
-
-### CIE Lab colour-distance analysis
-
-A colour-distance approach based on a representative plaster colour was also evaluated. It failed to account adequately for the non-uniform appearance of exposed plaster caused by deterioration, staining, surface deposits, uneven illumination and local material variation.
-
-### Fixed binary thresholds
-
-Different fixed threshold combinations were tested. Their performance varied substantially between scenes because illumination, pigment appearance and plaster characteristics were not uniform throughout the mural cycle.
-
-### Morphological refinement
-
-Morphological opening and closing operations were tested to remove isolated pixels and improve the coherence of segmentation regions. Although useful for post-processing, morphology could not correct the fundamental classification errors introduced by an unsuitable preceding segmentation step.
-
-### Unsupervised K-Means clustering
-
-K-Means colour clustering provided partial separation in some areas but operated primarily on spectral similarity without sufficient spatial or semantic information. Preserved light-coloured elements were therefore frequently grouped together with exposed plaster.
-
-### Edge-based segmentation
-
-Canny and related gradient-based approaches were affected by the large number of high-frequency structures present in the historical photograph, including craquelure, cracks, painted contour lines, figures and architectural details. Detected edges therefore did not correspond consistently to the boundaries of surface loss.
-
-### Supervised deep-learning approaches
-
-Supervised segmentation approaches, including U-Net-type architectures, were considered but were not adopted because the case study is based on a single archival photograph and does not provide a sufficiently large, diverse and independently annotated training dataset. Under these conditions, a supervised model would be highly susceptible to overfitting to the particular image and its illumination and visual characteristics.
-
-## Final segmentation strategy
-
-The experiments demonstrated that no single fully automatic segmentation technique provided sufficiently reliable results for every scene.
-
-The final workflow therefore uses **scene-specific segmentation**.
-
-The four compositions are analysed individually, with thresholds and spatial constraints adjusted according to their respective visual and chromatic characteristics, followed by manual visual verification.
-
-The final procedure combines:
-
-- Gaussian smoothing;
-- conversion to the CIE Lab colour space;
-- threshold-based segmentation;
-- scene-specific parameters;
-- manually defined regions of interest and protective masks where required;
-- morphological refinement.
-
-Otsu thresholding is used for *The Transfiguration* and *The Ascension*, while fixed thresholds combined with manually defined spatial constraints are used for *Pentecost* and *The Entry into Jerusalem*.
-
-This approach was adopted because the visual characteristics of exposed plaster vary substantially between scenes and cannot be represented adequately by a single global segmentation rule.
-
-## Quantitative results
-
-The final workflow produced the following estimates of detected surface loss within the analysed scene regions:
-
-| Scene | Detected surface loss |
-|---|---:|
-| *The Transfiguration* | 31.21% |
-| *The Ascension* | 32.43% |
-| *Pentecost* | 0.75% |
-| *The Entry into Jerusalem* | 2.60% |
-| **Overall detected surface loss** | **16.66%** |
-
-The overall value is calculated from the total number of detected surface-loss pixels relative to the total number of analysed pixels across the four scene regions. It is therefore not the arithmetic mean of the four scene-level percentages.
-
-The quantitative results are estimates of **detected** surface loss within the analysed image regions. They should not be interpreted as conservation-grade measurements of physically lost material.
-
-## Limitations
-
-The analysis is based on a single archival photograph and therefore reflects only the visual information preserved in that photographic record.
-
-The segmentation procedure does not capture every visually identifiable area of surface loss. This limitation is particularly apparent where exposed plaster exhibits visual characteristics similar to those of preserved pictorial elements.
-
-The resulting masks may therefore contain both false-positive and false-negative classifications.
-
-The reported percentages should consequently be understood as conservative computational estimates of the surface loss detected by the implemented procedure within the analysed image regions.
-
-The notebook does not attempt to reconstruct missing pictorial content or provide a conservation diagnosis. Direct physical examination of the mural would be required for such purposes.
-
-## Repository structure
+## Repository Structure
 
 ```text
 .
 ├── data/
 │   └── yamborano_fresco.jpg
-│
-├── notebook/
-│   └── Recovering_the_Unrecoverable_Yamborano_Fresco_Damage_Mapping_Notebook.ipynb
-│
 ├── outputs/
 │   ├── per_scene_masks.png
 │   └── yamborano_surface_loss_quantification.csv
-│
+├── Recovering_the_Unrecoverable_Yamborano_Fresco_Damage_Mapping_Notebook.ipynb
 ├── requirements.txt
 ├── LICENSE
 ├── CITATION.cff
 └── README.md
+```
+
+Research Context
+
+The Yamborano fresco cycle is a previously unpublished example of Bulgarian National Revival ecclesiastical painting in the Church of the Dormition of the Mother of God, Yamborano, Kyustendil province, Bulgaria.
+
+Severe paint loss affects substantial portions of the cycle, making direct visual interpretation difficult. The computational analysis was developed to move beyond a purely impressionistic assessment of damage and to provide a quantitative description of the surface loss visible in the photographic record made by the author in 2005.
+
+The notebook accompanies the article:
+
+Recovering the Unrecoverable: Documenting and Interpreting a Vanishing Bulgarian National Revival Fresco Cycle
+
+and provides the computational methodology underlying the quantitative estimates reported in the study.
+
+Computational Approach
+
+The analysis uses classical computer-vision techniques implemented in Python.
+
+The workflow includes:
+
+image preparation;
+scene-specific cropping;
+colour-based segmentation;
+morphological processing;
+binary mask generation;
+visual inspection;
+quantitative calculation of detected surface loss; and
+graphical visualization of the results.
+
+A major methodological difficulty is the visual similarity between exposed plaster and preserved light-coloured pictorial elements, including white garments, halos, facial highlights, and other illuminated passages.
+
+No single global segmentation rule produced satisfactory results across all four scenes. The final procedure therefore uses scene-specific segmentation, with thresholds and spatial constraints adjusted according to the visual and chromatic characteristics of each composition, followed by manual visual verification.
+
+The notebook also documents the alternative computer-vision approaches tested during methodological development and their failure modes in this particular case. These experiments record the trial-and-error process through which the final scene-specific strategy was established.
+
+Quantitative Results
+
+The final analysis produced the following estimates of detected surface loss within the analysed regions:
+
+Scene	Detected surface loss
+The Transfiguration	31.21%
+The Ascension	32.43%
+Pentecost	0.75%
+The Entry into Jerusalem	2.60%
+Overall detected surface loss	16.66%
+
+These values represent computational estimates of detected surface loss within the analysed photographic regions, rather than conservation-grade measurements of the physical condition of the murals.
+
+The segmentation masks do not capture every visually identifiable area of surface loss. In particular, false-negative results occur where exposed plaster has visual characteristics similar to preserved pictorial elements. The reported percentages should therefore be interpreted as conservative computational estimates of the surface loss detected by the implemented procedure.
+
+Per-Scene Segmentation
+
+The following visualization presents the detected surface-loss overlays and corresponding binary masks for the four analysed scenes.
+
+Reproducibility and Interpretation
+
+The notebook is intended as a transparent and reproducible computational research companion to the accompanying art-historical study.
+
+The workflow records the image-processing procedures, scene-specific segmentation decisions, quantitative calculations, and visual outputs used to obtain the reported estimates.
+
+Reproducibility in this context does not imply that the computational segmentation constitutes an exhaustive or conservation-grade reconstruction of physical paint loss. The analysis quantifies the surface loss detected in the available photographic record using the implemented image-processing procedure.
+
+The source photograph represents the condition of the mural as documented in 2005 and may itself already represent a stage of deterioration. Subsequent physical changes to the monument are outside the scope of the present computational analysis.
+
+Relation to the Accompanying Research
+
+The notebook is designed to complement, rather than replace, traditional art-historical and conservation approaches.
+
+The computational analysis provides a quantitative description of visible surface loss, while the accompanying article addresses the art-historical identification of the mural cycle, its iconographic and stylistic context, and the broader implications of documenting a severely damaged monument through a combination of traditional art-historical research and computational methods.
+
+Computer vision is used here as an analytical instrument within art-historical research. It does not reconstruct missing imagery or substitute computational inference for direct historical or material evidence.
+
+Data and Image Rights
+
+The source photograph analysed in this repository was taken by the author in 2005 in the Church of the Dormition of the Mother of God, Yamborano, Kyustendil province, Bulgaria.
+
+Permission to photograph the church interior was obtained from the local representatives of the Bulgarian Orthodox Church.
+
+Software
+
+The computational workflow is implemented in Python using open-source scientific and computer-vision libraries. The computational environment and package dependencies are documented in requirements.txt.
+
+Author
+
+Desislava S. Georgieva, PhD in Art History
+
+Independent Researcher
+
+Citation
+
+If you use this notebook, its code, methodology, or quantitative results in your research, please cite the archived version of this repository.
+
+Citation metadata are provided in CITATION.cff.
+
+License
+
+The code and associated software materials in this repository are released under the MIT License.
+
+Copyright © 2026 Desislava S. Georgieva, PhD in Art History.
