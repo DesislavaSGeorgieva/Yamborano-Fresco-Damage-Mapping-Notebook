@@ -34,7 +34,13 @@ This repository contains the computational notebook and selected research output
 
 ---
 
-## 🖼️ Research Output
+## 🖼️ From Source Image to Computational Segmentation
+
+### Source Photograph
+
+![Original photograph of the Yamborano fresco cycle](data/yamborano_fresco.jpg)
+
+### Scene-Specific Segmentation
 
 ![Per-scene segmentation masks](outputs/per_scene_masks.png)
 
