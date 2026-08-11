@@ -38,7 +38,7 @@ This repository contains the computational notebook and selected research output
 
 ### Source Photograph
 
-![Original photograph of the Yamborano fresco cycle](data/yamborano_fresco.jpg)
+![Original photograph of the Yamborano fresco cycle](data/yamborano_fresco.JPG)
 
 ### Scene-Specific Segmentation
 
