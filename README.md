@@ -1,106 +1,147 @@
-# Recovering the Unrecoverable — Yamborano Fresco Damage Mapping Notebook  
+# Recovering the Unrecoverable — Yamborano Fresco Damage Mapping Notebook
 
-Companion computational notebook to:
+A computational research companion to the study of the nineteenth-century Bulgarian National Revival fresco cycle preserved in the former Church of St George in Yamborano.
 
-> D. S. Georgieva, *Recovering the Unrecoverable: Documenting and Interpreting a Vanishing
-> Bulgarian National Revival Fresco Cycle*, 2026.
+This repository contains the Jupyter Notebook used to document and quantitatively analyse visible surface loss recorded in an archival photograph of the mural cycle.
 
-This repository documents the extent of surface loss in the nineteenth-century fresco cycle in
-the Church of the Dormition of the Mother of God, Yamborano, Kyustendil province, Bulgaria, as
-recorded in a single 2005 photograph. It classifies the photograph's pixels into "surviving
-painted surface" and "lost surface / bare plaster," and reports the resulting percentage of loss
-for each of the cycle's four scenes (the Ascension, the Transfiguration, the Entry into Jerusalem,
-and Pentecost).
+The computational workflow is designed to complement art-historical and visual analysis by transforming selected observations of visible paint loss into transparent, reproducible numerical measurements.
 
-**This is documentation, not reconstruction.** The notebook does not use any generative or
-AI image-completion method, and does not attempt to visually predict, complete, or invent any
-missing pictorial content. See Section 2 of the paper for the reasoning behind this deliberate
-restriction.
+## Research objective
+
+The notebook addresses a specific methodological question:
+
+**How can visible surface loss in a historical mural photograph be documented and quantitatively estimated using computational image analysis?**
+
+The workflow distinguishes between:
+
+* preserved painted surface;
+* exposed plaster interpreted as visible surface loss.
+
+The purpose is not to reconstruct missing painting or to provide a conservation-grade diagnosis. The analysis is limited to the visual information contained in the available photographic record.
+
+## Methodological approach
+
+The workflow consists of the following principal stages:
+
+1. loading and preprocessing the archival photograph;
+2. identifying the four analysed scenes of the mural cycle;
+3. separating the scenes into individual image regions;
+4. evaluating alternative image-segmentation approaches;
+5. applying a scene-specific segmentation strategy;
+6. visually inspecting the resulting binary masks and overlays;
+7. calculating detected surface loss for each analysed scene;
+8. calculating the aggregate detected surface loss across the four analysed scene regions;
+9. visualising the quantitative results.
+
+Several segmentation approaches were evaluated during methodological development, including RGB thresholding, HSV colour thresholding, fixed binary thresholds, morphological refinement and unsupervised K-Means colour clustering. These experiments demonstrated that no single fully automatic approach provided sufficiently reliable results across all four scenes.
+
+The final procedure is therefore **scene-specific**. Thresholds and spatial constraints are adjusted according to the visual and chromatic characteristics of each composition, followed by manual visual verification.
+
+For *The Transfiguration* and *The Ascension*, the final procedure uses Gaussian smoothing, conversion to the LAB colour space, Otsu thresholding and morphological opening. For *Pentecost* and *The Entry into Jerusalem*, fixed thresholds are combined with manually defined regions of interest and protective masks, followed by morphological refinement.
+
+## Quantitative results
+
+The final workflow produces the following detected surface-loss estimates within the analysed scene regions:
+
+| Scene                             | Detected surface loss |
+| --------------------------------- | --------------------: |
+| *The Transfiguration*             |                31.21% |
+| *The Ascension*                   |                32.43% |
+| *Pentecost*                       |                 0.75% |
+| *The Entry into Jerusalem*        |                 2.60% |
+| **Overall detected surface loss** |            **16.66%** |
+
+The aggregate value is calculated from the total number of pixels classified as surface loss relative to the total number of analysed pixels. It is therefore not the arithmetic mean of the four scene-level percentages.
+
+These values should be interpreted as **computational estimates of detected surface loss within the analysed image regions**, rather than as direct measurements of physically lost material.
+
+The segmentation masks do not capture every visually identifiable area of surface loss. This limitation is particularly apparent in scenes where exposed plaster has visual characteristics similar to preserved pictorial elements. The quantitative results should therefore be understood as conservative estimates of the surface loss detected by the implemented procedure.
 
 ## Repository structure
 
-```
+```text
 .
 ├── data/
-│   └── yamborano_fresco.jpg    
+│   └── yamborano_fresco.jpg
 ├── notebook/
-│   └── Recovering_the_Unrecoverable_Yamborano_Fresco_Damage_Mapping_Notebook.ipynb         
-├── outputs/                         
-│   ├── 00_source_photograph.png
-│   ├── 01_compartment_boundaries.png
-│   ├── 02_full_lost_mask_overlay.png
-│   ├── 03_per_scene_masks.png
+│   └── Recovering_the_Unrecoverable_Yamborano_Fresco_Damage_Mapping_Notebook.ipynb
+├── outputs/
 │   └── yamborano_surface_loss_quantification.csv
 ├── requirements.txt
 ├── LICENSE
+├── CITATION.cff
 └── README.md
 ```
 
-## Method, in brief
+### `data/`
 
-1. The four framed compartments of the cycle are defined as polygons in pixel coordinates
-   (Section 3 of the notebook), since the photograph is taken at an oblique angle to a curved
-   ceiling surface.
-2. A small set of example pixel colours - some confirmed bare/lost plaster, some confirmed
-   surviving paint of several different colours - are converted to CIELAB colour space and used to
-   train a k-nearest-neighbours classifier (Section 4). Every pixel in the photograph is then
-   labelled "lost" or "surviving" according to which labelled examples its colour most closely
-   resembles.
-3. The proportion of "lost" pixels within each compartment's polygon is reported as that scene's
-   percentage of surface loss (Section 5).
+Contains the archival source photograph used as the input for the computational analysis.
 
-**Please read Section 4 of the notebook before treating the numbers as final.** The default
-example points used to calibrate the classifier are a provisional, illustrative starting point,
-not a substitute for the author's own judgement made from the original photograph (or the site
-itself, if still accessible). The notebook includes an interactive tool for replacing these
-defaults with hand-picked points.
+### `notebook/`
 
-## Results (current run)
+Contains the complete Jupyter Notebook documenting the computational workflow, methodological experiments, final segmentation procedure, visual inspection, quantitative analysis and graphical presentation of the results.
 
-| Scene | Surface lost (%) | Surface surviving (%) |
-|---|---|---|
-| Ascension | 32.43 | 67.57 |
-| Transfiguration | 31.21 | 68.79 |
-| Entry into Jerusalem | 2.60 | 97.40 |
-| Pentecost |  0.75 | 99.25 |
+### `outputs/`
 
-> Across the four compartments, surface loss ranges from 0.75% (Pentecost) to 31.21% 
-> (The Transfiguration), with a mean loss across the cycle of 16.66%.
+Contains the quantitative results generated from the final analysis.
 
-## Reproducing the results
+### `requirements.txt`
 
-```bash
-git clone <this-repository-url>
-cd yamborano-fresco-damage-mapping
-pip install -r requirements.txt
-jupyter notebook notebook/damage_mapping.ipynb
-```
+Lists the Python packages required to reproduce the computational workflow.
 
-Run all cells (`Kernel → Restart & Run All`). Figures and the results table are (re)written to
-`outputs/`.
+### `LICENSE`
+
+Specifies the terms under which the repository contents may be used.
+
+### `CITATION.cff`
+
+Provides structured citation information for the repository and enables GitHub's citation functionality.
+
+## Reproducibility and interpretation
+
+The notebook is intended as a transparent computational record of the analysis performed for this case study.
+
+The results depend on the characteristics of the archival photograph, the manually defined scene regions and the scene-specific segmentation parameters. Consequently, the workflow should not be interpreted as a universally applicable automatic detector of mural-painting deterioration.
+
+Instead, it provides a reproducible and inspectable framework that can be adapted and tested on other historical mural photographs.
+
+## Relation to the accompanying research article
+
+The notebook is a computational companion to the accompanying research article *Recovering the Unrecoverable*.
+
+The article provides the broader art-historical, historical and visual interpretation of the Yamborano mural cycle, while this repository documents the computational procedures used to quantify visible surface loss from the archival photographic record.
+
+The two outputs are therefore complementary: the article provides the interpretative context, while the notebook provides the computational evidence and reproducible image-analysis workflow underlying the quantitative component of the study.
+
+## Software and technologies
+
+The workflow uses open-source Python libraries, including:
+
+* Python
+* OpenCV
+* NumPy
+* Pandas
+* Matplotlib
+* ipywidgets
+
+The computational environment and software dependencies are documented in `requirements.txt`.
 
 ## Limitations
 
-See Section 7 of the notebook for the full discussion. In brief: this is a reproducible estimate
-from a single photographic source, calibrated by simple colour classification, not a
-conservation-grade physical survey. Photographic exposure and colour balance, the absence of a
-calibrated colour reference, ambiguous cases (pale flesh tones, gold halos), oblique/curved-surface
-perspective, and the lack of any independent ground truth all bound how precisely the reported
-percentages should be read.
+The analysis is based on a single archival photograph and therefore reflects only the visual information preserved in that photographic record.
 
-## Citation
+The segmentation procedure is not intended to reconstruct missing painting, diagnose conservation conditions, or replace direct physical examination of the mural.
 
-If you use this notebook or its results, please cite both the paper and this repository:
+Because the visual characteristics of exposed plaster overlap with those of some preserved light-coloured pictorial elements, the segmentation masks may contain both false-positive and false-negative classifications.
 
-> D. S. Georgieva, *Recovering the Unrecoverable: Documenting and Interpreting a Vanishing
-> Bulgarian National Revival Fresco Cycle*, 2026.
-
-> D. S. Georgieva, *Yamborano Fresco: Damage Mapping Notebook*, GitHub, 2026.
-> DOI: `[to be added once this repository is archived via the GitHub–Zenodo integration]`
+The reported percentages should consequently be treated as computational estimates of **detected** surface loss within the analysed image regions.
 
 ## License
 
-Code in this repository is released under the MIT License (see `LICENSE`). The source photograph
-in `data/` is the author's own work, published here for the first time; see the paper's footnote 2
-regarding the permissions under which it was taken. Please contact the author regarding reuse of
-the photograph itself.
+See the [`LICENSE`](LICENSE) file for the applicable license.
+
+## Citation
+
+If you use this notebook, its code, or its quantitative results in your research, please cite the repository using the information provided in `CITATION.cff`.
+
+A DOI will be added following archival of the release through the GitHub–Zenodo integration.
