@@ -1,4 +1,4 @@
-# Recovering the Unrecoverable — Yamborano Fresco Damage Mapping Notebook
+# Recovering the Unrecoverable - Yamborano Fresco Damage Mapping Notebook
 
 **A computational research companion to the article _Recovering the Unrecoverable: Documenting and Interpreting a Vanishing Bulgarian National Revival Fresco Cycle_.**
 
