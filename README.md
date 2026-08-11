@@ -26,7 +26,7 @@ The Yamborano fresco cycle is a previously unpublished example of Bulgarian Nati
 
 Severe paint loss affects substantial portions of the cycle, making direct visual interpretation difficult. The computational analysis was developed to move beyond a purely impressionistic assessment of damage and to provide a quantitative description of the surface loss visible in the photographic record made by the author in 2005.
 
-## The notebook accompanies the article:
+The notebook accompanies the article:
 
 Recovering the Unrecoverable: Documenting and Interpreting a Vanishing Bulgarian National Revival Fresco Cycle
 
@@ -36,7 +36,7 @@ and provides the computational methodology underlying the quantitative estimates
 
 The analysis uses classical computer-vision techniques implemented in Python.
 
-## The workflow includes:
+The workflow includes:
 
 - image preparation;
 - scene-specific cropping;
@@ -57,12 +57,13 @@ The notebook also documents the alternative computer-vision approaches tested du
 
 The final analysis produced the following estimates of detected surface loss within the analysed regions:
 
-### Scene	Detected surface loss
-- The Transfiguration	31.21%
-- The Ascension	32.43%
-- Pentecost	0.75%
-- The Entry into Jerusalem	2.60%
-- Overall detected surface loss	16.66%
+| Scene                             | Detected surface loss |
+| --------------------------------- | --------------------: |
+| The Transfiguration               |                31.21% |
+| The Ascension                     |                32.43% |
+| Pentecost                         |                 0.75% |
+| The Entry into Jerusalem          |                 2.60% |
+| **Overall detected surface loss** |            **16.66%** |
 
 These values represent computational estimates of detected surface loss within the analysed photographic regions, rather than conservation-grade measurements of the physical condition of the murals.
 
