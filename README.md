@@ -11,7 +11,7 @@ This repository contains the computational notebook and selected research output
 ```text
 .
 ├── data/
-│   └── yamborano_fresco.jpg
+│   └── yamborano_fresco.JPG
 ├── outputs/
 │   ├── per_scene_masks.png
 │   └── yamborano_surface_loss_quantification.csv
